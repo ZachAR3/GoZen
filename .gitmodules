@@ -1,0 +1,9 @@
+[submodule "src/GDExtensions/godot-cpp"]
+	path = src/GDExtensions/godot-cpp
+	url = https://github.com/godotengine/godot-cpp
+[submodule "src/GDExtension/godot-cpp"]
+	path = src/GDExtension/godot-cpp
+	url = https://github.com/godotengine/godot-cpp
+[submodule "/mnt/Productivity/Gamemaking/Godot/Projects/Godot 4/GoZen/src/renderers/render_server/godot-cpp"]
+	path = /mnt/Productivity/Gamemaking/Godot/Projects/Godot 4/GoZen/src/renderers/render_server/godot-cpp
+	url = https://github.com/godotengine/godot-cpp

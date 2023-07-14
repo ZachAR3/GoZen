@@ -1,0 +1,59 @@
+#!/usr/bin/env python
+import os
+import sys
+
+env = SConscript("godot-cpp/SConstruct")
+
+# For reference:
+# - CCFLAGS are compilation flags shared between C and C++
+# - CFLAGS are for C-specific compilation flags
+# - CXXFLAGS are for C++-specific compilation flags
+# - CPPFLAGS are for pre-processor flags
+# - CPPDEFINES are for pre-processor defines
+# - LINKFLAGS are for linking flags
+
+# tweak this if you want to use different folders, or more folders, to store your source code in.
+env.Append(CPPPATH=["src/"])
+sources = Glob("src/*.cpp")
+
+if env["platform"] == "macos":
+    library = env.SharedLibrary(
+        "../../Extensions/RenderServer{}.{}.framework/RenderServer.{}.{}".format(
+            env["platform"], env["target"], env["platform"], env["target"]
+        ),
+        source=sources,
+    )
+else:
+    library = env.SharedLibrary(
+        "../../Extensions/RenderServer/RenderServer{}{}".format(env["suffix"], env["SHLIBSUFFIX"]),
+        source=sources,
+    )
+
+def create_gdextension_file():
+
+    with open("../../Extensions/RenderServer/RenderServer.gdextension", 'w') as file:
+        file.write('''[configuration]
+entry_symbol = "example_library_init"
+compatibility_minimum = 4.1
+
+[libraries]
+macos.debug = "res://Extensions/RenderServer/libRenderServer.macos.template_debug.framework"
+macos.release = "res://Extensions/RenderServer/libRenderServer.macos.template_release.framework"
+windows.debug.x86_32 = "res://Extensions/RenderServer/libRenderServer.windows.template_debug.x86_32.dll"
+windows.release.x86_32 = "res://Extensions/RenderServer/libRenderServer.windows.template_release.x86_32.dll"
+windows.debug.x86_64 = "res://Extensions/RenderServer/libRenderServer.windows.template_debug.x86_64.dll"
+windows.release.x86_64 = "res://Extensions/RenderServer/libRenderServer.windows.template_release.x86_64.dll"
+linux.debug.x86_64 = "res://Extensions/RenderServer/libRenderServer.linux.template_debug.x86_64.so"
+linux.release.x86_64 = "res://Extensions/RenderServer/libRenderServer.linux.template_release.x86_64.so"
+linux.debug.arm64 = "res://Extensions/RenderServer/libRenderServer.linux.template_debug.arm64.so"
+linux.release.arm64 = "res://Extensions/RenderServer/libRenderServer.linux.template_release.arm64.so"
+linux.debug.rv64 = "res://Extensions/RenderServer/libRenderServer.linux.template_debug.rv64.so"
+linux.release.rv64 = "res://Extensions/RenderServer/libRenderServer.linux.template_release.rv64.so"
+android.debug.x86_64 = "res://Extensions/RenderServer/libRenderServer.android.template_debug.x86_64.so"
+android.release.x86_64 = "res://Extensions/RenderServer/libRenderServer.android.template_release.x86_64.so"
+android.debug.arm64 = "res://Extensions/RenderServer/libRenderServer.android.template_debug.arm64.so"
+android.release.arm64 = "res://Extensions/RenderServer/libRenderServer.android.template_release.arm64.so"''')
+
+
+create_gdextension_file()
+Default(library)

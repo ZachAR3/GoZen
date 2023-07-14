@@ -28,6 +28,10 @@ Globals="*res://scripts/autoloads/globals.gd"
 window/size/viewport_width=1920
 window/size/viewport_height=1080
 
+[dotnet]
+
+project/assembly_name="GoZen"
+
 [gui]
 
 theme/custom_font="res://fonts/noto_sans_jp/static/NotoSansJP-Regular.ttf"
